@@ -3,10 +3,16 @@
   "solution": {
     "name": "react-yammer-aadtoken-client-side-solution",
     "id": "26a3fd56-6c52-4dc8-97fc-7d985adda244",
-    "version": "1.0.0.0",
+    "version": "1.0.0.3",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
-    "isDomainIsolated": false
+    "isDomainIsolated": false,
+    "webApiPermissionRequests": [
+      {
+        "resource": "Office 365 Yammer",
+        "scope": "user_impersonation"
+      }
+    ]
   },
   "paths": {
     "zippedPackage": "solution/react-yammer-aadtoken.sppkg"
