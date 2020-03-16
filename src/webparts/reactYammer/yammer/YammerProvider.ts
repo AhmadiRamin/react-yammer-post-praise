@@ -20,7 +20,7 @@ export default class YammerProvider implements IYammerProvider {
 
     public async getGroups(){
 
-        let userId = await this.getUserId(this.currentUser);
+        const userId = await this.getUserId(this.currentUser);
 
         const reqHeaders = {
             "content-type": "application/json",
@@ -32,7 +32,7 @@ export default class YammerProvider implements IYammerProvider {
     }
 
     public async postPraise(praise: IPraise) {
-        let userId = await this.getUserId(praise.nominee);
+        const userId = await this.getUserId(praise.nominee);
 
         const reqHeaders = {
             "content-type": "multipart/form-data",

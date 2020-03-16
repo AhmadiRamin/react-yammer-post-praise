@@ -19,7 +19,7 @@
     "group": { "default": "Other" },
     "title": { "default": "React Yammer" },
     "description": { "default": "React Yammer description" },
-    "officeFabricIconFontName": "Page",
+    "officeFabricIconFontName": "YammerLogo",
     "properties": {
       "description": "React Yammer"
     }

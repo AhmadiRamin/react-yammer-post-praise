@@ -14,7 +14,6 @@ import badges from './badges';
 const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
 
   const [loading, setLoading] = React.useState(false);
-  const [formVisible, setFormVisible] = React.useState(true);
   const [nominee, setNominee] = React.useState("");
   const [icon, setIcon] = React.useState("FavoriteStar");
   const [groups,setGroups] = React.useState<IDropdownOption[]>([]);
@@ -30,9 +29,7 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
 
   React.useEffect(()=>{
     props.yammerProvider.getGroups().then(grps=>{
-     
       const options: IDropdownOption[] = grps.data.map(g=>  ({key:g.id,text:g.full_name}));
-      console.log(options);
       setGroups(options);
     }).catch(err=>{
       console.log(err);
@@ -94,7 +91,7 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
           }
         </div>
         {
-          (!loading && formVisible) &&
+          !loading &&
           <div>
             <div>
               <PeoplePicker isRequired
