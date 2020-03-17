@@ -96,7 +96,7 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
             <div>
               <PeoplePicker isRequired
                 context={props.context}
-                titleText="Nominee"
+                titleText="Who do you want to praise?"
                 ensureUser={true}
                 personSelectionLimit={1}
                 groupName=""
@@ -108,7 +108,7 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
               
               <TextField required placeholder="Please enter the Headline" label="Headline" value={headline} onChanged={(value) => setHeadline(value)} />
               
-              <TextField required maxLength={250} placeholder="Describe what they've done." label="Reason" value={praise} multiline={true} rows={6} onChanged={(value) => setPraise(value)} />
+              <TextField required maxLength={250} placeholder="Describe what they've done." label="What they've done" value={praise} multiline={true} rows={6} onChanged={(value) => setPraise(value)} />
               
               <Dropdown required label="Group"
                 options={groups} onChange={_onGroupChange}/>

@@ -3,22 +3,12 @@
   "solution": {
     "name": "react-yammer-aadtoken-client-side-solution",
     "id": "26a3fd56-6c52-4dc8-97fc-7d985adda244",
-    "version": "1.0.0.6",
+    "version": "1.0.0.8",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
-    "isDomainIsolated": false,
-    "webApiPermissionRequests": [
-      {
-        "resource": "Windows Azure Active Directory",
-        "scope": "User.Read"
-      },
-      {
-        "resource": "Yammer API",
-        "scope": "user_impersonation"
-      }
-    ]
+    "isDomainIsolated": false
   },
   "paths": {
-    "zippedPackage": "solution/react-yammer-aadtoken.sppkg"
+    "zippedPackage": "solution/react-yammer-post-praise.sppkg"
   }
 }

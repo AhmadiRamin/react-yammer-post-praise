@@ -10,7 +10,7 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import * as strings from 'ReactYammerWebPartStrings';
 import ReactYammer from './components/ReactYammer';
 import { IReactYammerProps } from './components/IReactYammerProps';
-import { AadTokenProvider  } from '@microsoft/sp-http';
+import { AadTokenProvider,AadHttpClient } from '@microsoft/sp-http';
 import YammerProvider from './yammer/YammerProvider';
 import { IYammerProvider } from './yammer/IYammerProvider';
 
@@ -18,16 +18,16 @@ export interface IReactYammerWebPartProps {
   description: string;
 }
 
-export default class ReactYammerWebPart extends BaseClientSideWebPart <IReactYammerWebPartProps> {
-  private aadToken:string = "";
+export default class ReactYammerWebPart extends BaseClientSideWebPart<IReactYammerWebPartProps> {
+  private aadToken: string = "";
 
   public render(): void {
-    let yammerProvider:IYammerProvider = new YammerProvider(this.aadToken,this.context.pageContext.user.email);
+    let yammerProvider: IYammerProvider = new YammerProvider(this.aadToken, this.context.pageContext.user.email);
 
     const element: React.ReactElement<IReactYammerProps> = React.createElement(
       ReactYammer,
       {
-        context:this.context,
+        context: this.context,
         yammerProvider
       }
     );
@@ -35,13 +35,12 @@ export default class ReactYammerWebPart extends BaseClientSideWebPart <IReactYam
     ReactDom.render(element, this.domElement);
   }
 
-  public async onInit(): Promise<void>{
-    
-    const tokenProvider:AadTokenProvider  = await this.context.aadTokenProviderFactory.getTokenProvider();
-    await tokenProvider.getToken("https://api.yammer.com").then(token=>{
-      this.aadToken = token;
-    });
-
+  public async onInit(): Promise<void> {
+    const tokenProvider: AadTokenProvider = await this.context.aadTokenProviderFactory.getTokenProvider();
+      await tokenProvider.getToken("https://api.yammer.com").then(token => {
+        console.log(token);
+        this.aadToken = token;
+      }).catch(err => console.log(err));
   }
 
   protected onDispose(): void {
