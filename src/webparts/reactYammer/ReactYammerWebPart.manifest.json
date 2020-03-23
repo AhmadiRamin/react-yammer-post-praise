@@ -17,11 +17,11 @@
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
     "group": { "default": "Other" },
-    "title": { "default": "Yammer Post Praise" },
-    "description": { "default": "React Yammer description" },
+    "title": { "default": "Yammer Praise" },
+    "description": { "default": "Post Praise to Yammer" },
     "officeFabricIconFontName": "YammerLogo",
     "properties": {
-      "description": "React Yammer"
+      "description": "Post Praise to Yammer"
     }
   }]
 }

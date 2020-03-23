@@ -4,12 +4,11 @@ import { IReactYammerProps } from './IReactYammerProps';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Dropdown, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
 import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import LoadingImage from './loading';
 import IPraise from '../interface/IPraise';
 import badges from './badges';
-var icons = require.context('./assets', true);
 
 const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
 
@@ -160,7 +159,7 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
               </div>
             </div>
           </div>
-          <DefaultButton className={styles.btnSubmit} text="Post" title="Please fill in all required fields" onClick={_postPraise} disabled={comment === "" || icon === "" || nominee === "" || groupId === ""} />
+          <PrimaryButton className={styles.btnSubmit} text="Post" title="Please fill in all required fields" onClick={_postPraise} disabled={comment === "" || icon === "" || nominee === "" || groupId === ""} />
 
         </div>
       }

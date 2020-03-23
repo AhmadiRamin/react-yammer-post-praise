@@ -15,6 +15,6 @@
     "isDomainIsolated": false
   },
   "paths": {
-    "zippedPackage": "solution/react-yammer-post-praise.sppkg"
+    "zippedPackage": "solution/react-yammer-praise.sppkg"
   }
 }
