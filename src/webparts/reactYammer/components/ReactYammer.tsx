@@ -19,9 +19,10 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
   const [groups, setGroups] = React.useState<IDropdownOption[]>([]);
   const [comment, setComment] = React.useState("");
   const [groupId, setGroupId] = React.useState("");
+  const [threadId,setThreadId] = React.useState("");
   const [messageBarStatus, setMessageBarStatus] = React.useState({
     type: MessageBarType.info,
-    message: '',
+    message:<span></span>,
     show: false
   });
 
@@ -58,10 +59,11 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
     setLoading(true);
     props.yammerProvider.postPraise(objPraise).then(response => {
       const threadId = response.data.messages[0].thread_id;
+      setThreadId(threadId);
       clearControls();
       setMessageBarStatus({
         type: MessageBarType.success,
-        message: "Your priase now been successfully added.",
+        message: <span>Your priase now been successfully added.<a target="_blank" href={`https://www.yammer.com/messages/${threadId}`}>See the praise on Yammer.</a></span>,
         show: true
       });
       setLoading(false);
@@ -69,7 +71,7 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
     }).catch(error => {
       setMessageBarStatus({
         type: MessageBarType.error,
-        message: "Unfortunately we could not post your praise. Please try again later.",
+        message: <span>"Unfortunately we could not post your praise. Please try again later."</span>,
         show: true
       });
       setLoading(false);
@@ -137,7 +139,7 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
               options={groups} onChange={_onGroupChange} />
 
             <Dropdown required label="Icon"
-            style={{width:"100px"}}
+            style={{width:"70px"}}
               onRenderOption={_onRenderOption}
               onRenderTitle={_onRenderTitle}
               options={badges} onChange={_onIconChange} />
