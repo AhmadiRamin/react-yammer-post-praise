@@ -2,23 +2,23 @@ import * as React from 'react';
 import styles from './ReactYammer.module.scss';
 import { IReactYammerProps } from './IReactYammerProps';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { Dropdown, IDropdownOption, IDropdownProps } from 'office-ui-fabric-react/lib/Dropdown';
+import { Dropdown, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
 import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import LoadingImage from './loading';
 import IPraise from '../interface/IPraise';
-import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import badges from './badges';
+var icons = require.context('./assets', true);
 
 const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
 
   const [loading, setLoading] = React.useState(false);
   const [nominee, setNominee] = React.useState("");
-  const [icon, setIcon] = React.useState("FavoriteStar");
-  const [groups,setGroups] = React.useState<IDropdownOption[]>([]);
-  const [headline, setHeadline] = React.useState("");
-  const [praise, setPraise] = React.useState("");
+  const [nomineeName, setNomineeName] = React.useState("");
+  const [icon, setIcon] = React.useState("");
+  const [groups, setGroups] = React.useState<IDropdownOption[]>([]);
+  const [comment, setComment] = React.useState("");
   const [groupId, setGroupId] = React.useState("");
   const [messageBarStatus, setMessageBarStatus] = React.useState({
     type: MessageBarType.info,
@@ -27,16 +27,17 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
   });
 
 
-  React.useEffect(()=>{
-    props.yammerProvider.getGroups().then(grps=>{
-      const options: IDropdownOption[] = grps.data.map(g=>  ({key:g.id,text:g.full_name}));
+  React.useEffect(() => {
+    props.yammerProvider.getGroups().then(grps => {
+      const options: IDropdownOption[] = grps.data.map(g => ({ key: g.id, text: g.full_name }));
       setGroups(options);
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err);
     });
-  },[]);
+  }, []);
 
   const _getPeoplePickerItems = (items: any[]) => {
+    setNomineeName(items[0].text);
     setNominee(items[0].secondaryText);
   };
 
@@ -51,13 +52,14 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
   const _postPraise = () => {
     const objPraise: IPraise = {
       icon,
-      headline,
       nominee,
-      praise,
+      comment,
       groupId
     };
     setLoading(true);
     props.yammerProvider.postPraise(objPraise).then(response => {
+      const threadId = response.data.messages[0].thread_id;
+      clearControls();
       setMessageBarStatus({
         type: MessageBarType.success,
         message: "Your priase now been successfully added.",
@@ -74,54 +76,94 @@ const ReactYammer: React.SFC<IReactYammerProps> = (props) => {
       setLoading(false);
     });
   };
+  const clearControls = () => {
+    setNominee("");
+    setIcon("");
+    setComment("");
+  };
+
+  const _onRenderOption = (option: IDropdownOption): JSX.Element => {
+    return (
+      <div>
+        <img style={{ marginRight: '8px' }} src={require(`./assets/${option.key}.png`)} width={24} height={24} />
+
+      </div>
+    );
+  };
+
+  const _onRenderTitle = (options: IDropdownOption[]): JSX.Element => {
+    const option = options[0];
+
+    return (
+      <div>
+        <img style={{ marginTop: '4px' }} src={require(`./assets/${option.key}.png`)} width={24} height={24} />
+
+      </div>
+    );
+  };
 
   return (
     <div className={styles.reactYammer}>
-        <div>
-          {
-            loading && <LoadingImage />
-          }
-        </div>
-        <div>
-          {
-            messageBarStatus.show &&
-            <MessageBar messageBarType={messageBarStatus.type}>{
-              messageBarStatus.message
-            }</MessageBar>
-          }
-        </div>
+      <div>
         {
-          !loading &&
+          loading && <LoadingImage />
+        }
+      </div>
+      <div>
+        {
+          (messageBarStatus.show && !loading) &&
+          <MessageBar messageBarType={messageBarStatus.type}>{
+            messageBarStatus.message
+          }</MessageBar>
+        }
+      </div>
+      {
+        !loading &&
+        <div>
           <div>
-            <div>
-              <PeoplePicker isRequired
-                context={props.context}
-                titleText="Who do you want to praise?"
-                ensureUser={true}
-                personSelectionLimit={1}
-                groupName=""
-                selectedItems={_getPeoplePickerItems}
-                defaultSelectedUsers={[nominee]}
-                showHiddenInUI={false}
-                principalTypes={[PrincipalType.User]}
-                resolveDelay={1000} />
-              
-              <TextField required placeholder="Please enter the Headline" label="Headline" value={headline} onChanged={(value) => setHeadline(value)} />
-              
-              <TextField required maxLength={250} placeholder="Describe what they've done." label="What they've done" value={praise} multiline={true} rows={6} onChanged={(value) => setPraise(value)} />
-              
-              <Dropdown required label="Group"
-                options={groups} onChange={_onGroupChange}/>
+            <PeoplePicker isRequired
+              context={props.context}
+              titleText="Who do you want to praise?"
+              ensureUser={true}
+              personSelectionLimit={1}
+              groupName=""
+              selectedItems={_getPeoplePickerItems}
+              defaultSelectedUsers={[nominee]}
+              showHiddenInUI={false}
+              principalTypes={[PrincipalType.User]}
+              resolveDelay={1000} />
+            <TextField required maxLength={250} placeholder="Describe what they've done." label="What they've done" value={comment} multiline={true} rows={6} onChanged={(value) => setComment(value)} />
 
-              <Dropdown required label="Icon"
-                options={badges} onChange={_onIconChange} />
-            </div>
-            <br />
-            <div title="Please fill in all required fields.">
-              <DefaultButton text="Post" title="Please fill in all required fields" onClick={_postPraise} disabled={headline === "" || praise === "" || icon === "" || nominee === "" || groupId ===""} />
+            <Dropdown required label="Group"
+              options={groups} onChange={_onGroupChange} />
+
+            <Dropdown required label="Icon"
+            style={{width:"100px"}}
+              onRenderOption={_onRenderOption}
+              onRenderTitle={_onRenderTitle}
+              options={badges} onChange={_onIconChange} />
+          </div>
+
+          <div className={styles.previewContainer} hidden={comment === "" && icon === "" && nominee === ""}>
+            <span>Preview:</span>
+            <div className={styles.previewBox}>
+              <div>
+                <img className={styles.previewIcon} src={require(`./assets/${icon ? icon : "star"}.png`)} width={32} height={32} />
+                <p className={styles.previewTitle}>
+                  Praised {nomineeName}
+                </p>
+                <p className={styles.previewComment}>
+                  {
+                    comment
+                  }
+                </p>
+              </div>
             </div>
           </div>
-        }
+          <DefaultButton className={styles.btnSubmit} text="Post" title="Please fill in all required fields" onClick={_postPraise} disabled={comment === "" || icon === "" || nominee === "" || groupId === ""} />
+
+        </div>
+      }
     </div>
   );
 };

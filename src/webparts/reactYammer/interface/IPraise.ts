@@ -1,7 +1,6 @@
 export default interface IPraise{
     threadId?:string;
-    headline:string;
-    praise:string;
+    comment:string;
     icon:string;
     nominee:string;
     groupId:string;

@@ -4,7 +4,7 @@ const loadingImage: any = require("./assets/loading.gif");
 const loading = ()=>{
     return(
         <>
-            <img src={loadingImage} width={250} />
+            <img src={loadingImage} width={350} />
         </>
     );
 };

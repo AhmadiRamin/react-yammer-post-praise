@@ -6,6 +6,12 @@
     "version": "1.0.0.8",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
+    "webApiPermissionRequests": [
+      {
+        "resource": "Windows Azure Active Directory",
+       "scope": "User.Read"
+      }
+     ],
     "isDomainIsolated": false
   },
   "paths": {

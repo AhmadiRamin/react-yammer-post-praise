@@ -39,12 +39,11 @@ export default class YammerProvider implements IYammerProvider {
             "Authorization": `Bearer ${this.aadToken}`
         };
 
-        const comment = `${praise.headline}\n\n${praise.praise}`;
         const form = new FormData();
         form.append("body", "posting as praise");
         form.append("group_id", praise.groupId);
         form.append("skip_body_notifications", "true");
-        form.append("praise", `{"comment":"${comment}","icon":"${praise.icon}","praised_user_ids":[${userId}]}`);
+        form.append("praise", `{"comment":"${praise.comment}","icon":"${praise.icon}","praised_user_ids":[${userId}]}`);
 
         return axios.post(`${this._apiUrl}messages.json`, form, { headers: reqHeaders });
     }

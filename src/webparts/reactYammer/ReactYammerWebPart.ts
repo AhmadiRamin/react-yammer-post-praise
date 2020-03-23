@@ -35,10 +35,9 @@ export default class ReactYammerWebPart extends BaseClientSideWebPart<IReactYamm
     ReactDom.render(element, this.domElement);
   }
 
-  public async onInit(): Promise<void> {
+  public async onInit(): Promise<void> {    
     const tokenProvider: AadTokenProvider = await this.context.aadTokenProviderFactory.getTokenProvider();
       await tokenProvider.getToken("https://api.yammer.com").then(token => {
-        console.log(token);
         this.aadToken = token;
       }).catch(err => console.log(err));
   }
